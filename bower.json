@@ -1,0 +1,24 @@
+{
+  "name": "js2kintone",
+  "version": "0.0.1",
+  "authors": [
+    "K Nishijima <nishijima@r3it.com>"
+  ],
+  "description": "JavaScript to kintone embed library",
+  "keywords": [
+    "kintone"
+  ],
+  "license": "APL",
+  "homepage": "http://www.r3it.com",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "1",
+    "jsrender": "~1.0.0-beta"
+  }
+}
