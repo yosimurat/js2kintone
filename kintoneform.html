@@ -1,2 +1,50 @@
-  <p> なまえ: {{:name}} </p>
-  <input type="text" name="name" value="{{:name}}">
+<form class="kintone" id="kintoneform">
+  
+  <div class="form-group">
+    <label for="_kintoneform__01_company">会社名 <span class="alert-danger">*</span></label>
+    <input type="text" class="form-control" id="_kintoneform__01_company" name="_01_company" value="" maxlength="256" required="required" />
+  </div>
+
+
+  <div class="form-group">
+    <label for="_kintoneform__02_division">部署名</label>
+    <input type="text" class="form-control" id="_kintoneform__02_division" name="_02_division" value="" maxlength="256"  />
+  </div>
+
+
+  <div class="form-group">
+    <label for="_kintoneform__03_name">お名前 <span class="alert-danger">*</span></label>
+    <input type="text" class="form-control" id="_kintoneform__03_name" name="_03_name" value="" maxlength="256" required="required" />
+  </div>
+
+
+  <div class="form-group">
+    <label for="_kintoneform__04_mail">メールアドレス <span class="alert-danger">*</span></label>
+    <input type="text" class="form-control" id="_kintoneform__04_mail" name="_04_mail" value="" maxlength="256" required="required" />
+  </div>
+
+
+  <div class="form-group">
+    <label for="_kintoneform__05_tel">お電話番号</label>
+    <input type="text" class="form-control" id="_kintoneform__05_tel" name="_05_tel" value="" maxlength="256"  />
+  </div>
+
+
+  <div class="form-group">
+    <label for="_kintoneform__06_title">タイトル <span class="alert-danger">*</span></label>
+    <input type="text" class="form-control" id="_kintoneform__06_title" name="_06_title" value="" maxlength="256" required="required" />
+  </div>
+
+
+  <div class="form-group">
+    <label for="_kintoneform__07_body">メッセージ本文 <span class="alert-danger">*</span></label>
+    <textarea class="form-control" id="_kintoneform__07_body" name="_kintoneform__07_body" required="required"></textarea>
+  </div>
+
+
+
+  <div id="kintoneFormSubmitSuccess" style="display: none" class="alert alert-success" role="alert"></div>
+  <div id="kintoneFormSubmitAlert" style="display: none" class="alert alert-danger" role="alert"></div>
+  <button type="buton" id="kintoneFormSubmit" class="btn btn-default">送信</button>
+
+</form>

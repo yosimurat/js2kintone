@@ -17,7 +17,9 @@ gulp.task('browserify', function() {
 gulp.task('libcombin', function() {
 	var libs = [
 		'./bower_components/jquery/dist/jquery.min.js',
-		'./bower_components/jsrender/jsrender.min.js'
+		'./bower_components/jsrender/jsrender.min.js',
+        './bower_components/aws-sdk-js/dist/aws-sdk.min.js',
+        './bower_components/hi-base64/build/base64.min.js'
 	];
 	gulp.src(libs)
 		.pipe(concat('bower_components.js'))
@@ -49,10 +51,10 @@ gulp.task('server', function() {
 });
 
 gulp.task('connect', function() {
-  connect.server({
-    root: './',
-    livereload: true
-  });
+    connect.server({
+        root: './',
+        livereload: true
+    });
 });
 
 gulp.task('default', ['server', 'connect', 'build'], function() {

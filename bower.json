@@ -19,6 +19,8 @@
   ],
   "dependencies": {
     "jquery": "1",
-    "jsrender": "~1.0.0-beta"
+    "jsrender": "~1.0.0-beta",
+    "aws-sdk-js": "~2.1.34",
+    "hi-base64": "~0.1.3"
   }
 }
