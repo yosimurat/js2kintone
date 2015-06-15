@@ -1,4 +1,4 @@
-kintoneCredential.groovy
+groovy/kintoneCredential.groovy
 
 dist/
 node_modules
