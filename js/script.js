@@ -1,6 +1,7 @@
-//$ = require('jquery');
+jQuery.noConflict();
 
-(function(config) {
+(function($, config) {
+    
     var errMsg = ' is required.';
     var requireConfigs = ['id', 'region', 'template'];
 
@@ -34,20 +35,7 @@
         console.log('non support');
     }
 
-    
-    
-    var data = {
-        name: 'foo'
-    };
-    $.get(config.template, function(value) {
-        var testTmp = $.templates(value);
-        var html = testTmp.render();
-        $('#js2kintoneRender').append(html);
-    });
-
-    $(document).on("click", '#kintoneFormSubmit', function () {
-        $('#kintoneFormSubmit').attr("disabled", true);
-        
+    var callLambda = function() {
         var json = {
             app: config['app'],
             record: {
@@ -79,39 +67,52 @@
             } else {
                 console.log(data);
                 if (data.StatusCode == 200) {
-                    $("#kintoneFormSubmitSuccess").html(config['successMsg']);
-                    $("#kintoneFormSubmitSuccess").attr("display", "inline");
-                    $('#kintoneFormSubmit').attr("disabled", false);
+                    successHandler();
                 }
             }
         });
+    };
 
-        /*
-        $.ajax({
-            type: 'post',
-            url: 'https://'+ config['subDomain'] +'.cybozu.com/k/v1/record.json',
-            data: JSON.stringify(json),
-            headers: {
-                'X-Cybozu-API-Token': config['apiToken'],
-                'Content-Type': 'application/json'
+    var successHandler = function() {
+        $("#kintoneFormSubmitSuccess").html(config['successMsg']);
+        $("#kintoneFormSubmitSuccess").css("display", "block");
+        $('#kintoneFormSubmit').hide();
+    };
+
+    $.ajax({
+        url: config.template,
+        dataType: 'text',
+        success: function(contents) {
+            var testTmp = $.templates(contents);
+            var html = testTmp.render();
+            $('#js2kintoneRender').append(html);
+        }
+    });
+    
+    $(document).on("click", '#kintoneFormSubmit', function () {
+        $('#kintoneFormSubmit').attr("disabled", true);
+
+        $("#kintoneform").validate({
+            errorPlacement: function (error, element) {
+                $(element).addClass('alert');
+                $(element).addClass('alert-danger');
+                $(element).removeClass('alert-success');
             },
-            dataType: 'json',
-            success: function(response) {
-                console.log(response);
-                $("#kintoneFormSubmitSuccess").html(config['successMsg']);
-                $("#kintoneFormSubmitSuccess").attr("display", "inline");
-            },
-            error: function(XMLHttpRequest, textStatus, errorThrown) {
-                console.log("XMLHttpRequest : " + XMLHttpRequest.status);
-                console.log("textStatus : " + textStatus);
-                console.log("errorThrown : " + errorThrown.message);
-            },
-            complete: function() {
-                $('#kintoneFormSubmit').attr("disabled", false);
+            success: function (label, element) {
+                $(element).removeClass('alert');
+                $(element).removeClass('alert-danger');
+                $(element).addClass('alert');
+                $(element).addClass('alert-success');
             }
         });
-*/
+
+
+        if ($("#kintoneform").valid()) {
+            callLambda();
+        } else {
+            $('#kintoneFormSubmit').attr("disabled", false);
+        }
 
     });
 
-})(js2kintoneConfig);
+})(jQuery, js2kintoneConfig);
