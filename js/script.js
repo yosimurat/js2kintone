@@ -3,7 +3,7 @@ jQuery.noConflict();
 (function($, config) {
     
     var errMsg = ' is required.';
-    var requireConfigs = ['id', 'region', 'template'];
+    var requireConfigs = ['id', 'region', 'template', 'lambdaFunc', 'successMsg'];
 
     for (i = 0; i < requireConfigs.length; i++) {
         config[requireConfigs[i]] = requireConfigs[i] in config ? config[requireConfigs[i]] : alert(requireConfigs[i] + errMsg);
