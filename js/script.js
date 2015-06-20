@@ -51,14 +51,13 @@ jQuery.noConflict();
 
         var context = base64.encode(JSON.stringify(json));
         console.log(JSON.stringify(json));
-        console.log(context);
 
         var lambda = new AWS.Lambda();
 
         var params = {
-            FunctionName:"js2kintone",
-            InvocationType:"RequestResponse",
-            ClientContext:context
+            FunctionName: config.lambdaFunc,
+            InvocationType: "RequestResponse",
+            ClientContext: context
         };
 
         lambda.invoke( params,function(err,data) {
