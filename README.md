@@ -4,15 +4,20 @@
 
 kintoneで作成したフォームをHTMLファイルに埋め込むことが出来るライブラリです。このライブラリを使うことで、kintoneで作ったフォームをあなたのWebサイトにそのまま設置することが出来ます。
 
+html(js2kintone) -> AWS Lambda -> kintone と問い合わせフォームの情報は流れてきます。
+
 This is embed library for kintone application form. You can deploy kintone form to your website on the fly.
+
+form informations flow : html(js2kintone) -> AWS Lambda -> kintone
 
 ## js2kintoneの機能 / features
 
-* kintoneのサブドメインとアプリケーションIDを指定して、HTMLフォームを自動的に生成します
-* 表示しないフィールドを設定することが可能です。これにより、管理者でしか利用しないフィールドをHTML側から入力できないようにします
+* kintoneCredentialファイルを元に、HTMLフォームのテンプレートを自動的に生成します
+* AWS Lambdaの関数とブラウザから利用するJavaScriptコードを自動生成します
 
-* Set the applicationID, you can deploy kintone form to HTML.
-* if you do not want to display fields, you exclude it.
+
+* HTML template create automatic via your  kintoneCredential file.
+* automatically generates a function of AWS Lambda and JavaScript code.
 
 ## kintoneってなに？ / What is kintone?
 
@@ -24,14 +29,26 @@ kintone is a cloud service that can make the business applications on the cloud 
 
 see https://www.kintone.com/
 
+## 必要なもの / Requirements
+
+* kintone account
+* AWS account
 
 ## サポート環境 / Supported environment
 
-* jQuery 1.x がサポートするブラウザ環境
+* AWS SDK for JavaScript がサポートするブラウザ環境（Internet Explorer 10.0以上など）
 
-## 使い方 / Installation & Usage
+* AWS SDK for JavaScript supports all modern web browsers. see detail this URL.
 
-TODO.
+詳細： http://docs.aws.amazon.com/AWSJavaScriptSDK/guide/browser-intro.html
+
+**IE9以下などのレガシーブラウザには未対応です**
+
+## 使い方 / Setup & Usage
+
+[設置方法と使い方](docs/setup-usage-jp.md)
+
+
 
 ## Author
 
@@ -39,7 +56,7 @@ TODO.
 
 ## Contact
 
-[R3 institute](http://www.r3it.com/)
+[R3 institute](https://www.r3it.com/)
 
 ## License
 
