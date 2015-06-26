@@ -13,6 +13,10 @@ gulp.task('browserify', function() {
 	}).bundle().pipe(source('main.js')).pipe(gulp.dest("./dist/browserify/"));
 });
 
+gulp.task('copylibs', function() {
+    gulp.src('./bower_components/es5-shim/es5-shim.min.js')
+        .pipe(gulp.dest('./dist/libs/'));
+});
 
 gulp.task('libcombin', function() {
 	var libs = [
@@ -39,7 +43,7 @@ gulp.task('uglify', function() {
 
 gulp.task('build', function(callback) {
   return runSequence(
-    ['browserify', 'libcombin'],
+    ['browserify', 'libcombin', 'copylibs'],
     'uglify',
     callback
   );
