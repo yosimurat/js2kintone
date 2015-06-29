@@ -13,11 +13,15 @@ gulp.task('browserify', function() {
 	}).bundle().pipe(source('main.js')).pipe(gulp.dest("./dist/browserify/"));
 });
 
+gulp.task('copylibs', function() {
+    gulp.src('./bower_components/es5-shim/es5-shim.min.js')
+        .pipe(gulp.dest('./dist/libs/'));
+});
 
 gulp.task('libcombin', function() {
 	var libs = [
-		'./bower_components/jquery/dist/jquery.min.js',
-		'./bower_components/jsrender/jsrender.min.js',
+        './bower_components/jquery/dist/jquery.min.js',
+        './bower_components/jsrender/jsrender.min.js',
         './bower_components/aws-sdk-js/dist/aws-sdk.min.js',
         './bower_components/hi-base64/build/base64.min.js',
         './bower_components/jquery-validation/dist/jquery.validate.min.js',
@@ -39,7 +43,7 @@ gulp.task('uglify', function() {
 
 gulp.task('build', function(callback) {
   return runSequence(
-    ['browserify', 'libcombin'],
+    ['browserify', 'libcombin', 'copylibs'],
     'uglify',
     callback
   );

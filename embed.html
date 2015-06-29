@@ -14,12 +14,19 @@ var js2kintoneConfig = {
   successMsg: 'お問い合わせいただき、ありがとうございました。'
 };
 </script>
+<!--[if lt IE 10]>
+<script type="text/javascript" src="./dist/libs/es5-shim.min.js"></script>
+<![endif]-->
 <script src="./dist/js/js2kintone.min.js" type="text/javascript"></script>
 
 </head>
 <body>
   
   <div id="js2kintoneRender"></div>
+  <div id="js2kintoneNonsupport" style="display: none">
+    <h3>大変申し訳ありません、ご利用のブラウザはお問い合わせフォームに対応していません。</h3>
+    <p>こちらの<a href="mailto:info@r3it.com">メールアドレス</a>に直接お問い合わせくださいますよう、お願いいたします。</p>
+  </div>
 
 
 <script type='text/javascript' id="__bs_script__">//<![CDATA[
