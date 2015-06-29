@@ -4,10 +4,18 @@ jQuery.noConflict();
 jQuery(window).load(function () {
     if (Js2kintone.checkEnv()) {
         Js2kintone.checkParams();
+        
+        jQuery("#_kintoneform_requestDate").datepicker({
+            dateFormat: 'yy-mm-dd',
+            minDate: 0, maxDate: "+3M",
+            showButtonPanel: true
+        });
+
     } else {
 //
     }
 });
+
 
 (function($, config) {
     Js2kintone = {
@@ -55,12 +63,13 @@ jQuery(window).load(function () {
         ,
         callLambda : function() {
 
-            var json = {
-                app: config['app'],
-                record: {
-                    "_01_company": encodeURIComponent($("#_kintoneform__01_company").val()) , "_02_division": encodeURIComponent($("#_kintoneform__02_division").val()) , "_03_name": encodeURIComponent($("#_kintoneform__03_name").val()) , "_04_mail": encodeURIComponent($("#_kintoneform__04_mail").val()) , "_05_tel": encodeURIComponent($("#_kintoneform__05_tel").val()) , "_06_title": encodeURIComponent($("#_kintoneform__06_title").val()) , "_07_body": encodeURIComponent($("#_kintoneform__07_body").val())
-                }
-            };
+
+        var json = {
+            app: config['app'],
+            record: {
+                 "_03_name": encodeURIComponent($("#_kintoneform__03_name").val()) , "_04_email": encodeURIComponent($("#_kintoneform__04_email").val()) , "_05_tel": encodeURIComponent($("#_kintoneform__05_tel").val()) , "_01_com": encodeURIComponent($("#_kintoneform__01_com").val()) , "_02_dep": encodeURIComponent($("#_kintoneform__02_dep").val()) , "_06_msg": encodeURIComponent($("#_kintoneform__06_msg").val()) , "requestDate": encodeURIComponent($("#_kintoneform_requestDate").val()) 
+            }
+        };
 
 
             AWS.config.update({
