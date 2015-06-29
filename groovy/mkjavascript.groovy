@@ -11,17 +11,17 @@ def subDomain = config.account.subDomain
 def appId = config.account.appId
 def apiToken = config.account.apiToken
 
+def dateField = {id -> """
+        jQuery("#${id}").datepicker({
+            dateFormat: 'yy-mm-dd',
+            minDate: 0, maxDate: "+3M",
+            showButtonPanel: true
+        });
+"""
+}
+def dateFieldScript = ''
+
 def jsHeader = """
-jQuery.noConflict();
-
-jQuery(window).load(function () {
-    if (Js2kintone.checkEnv()) {
-        Js2kintone.checkParams();
-    } else {
-//
-    }
-});
-
 (function(\$, config) {
     Js2kintone = {
         checkEnv: function() {
@@ -166,6 +166,16 @@ http.request(Method.GET, ContentType.TEXT) {
           records <<= ","
         }
         records <<= """ "${it.code}": encodeURIComponent(\$("#_kintoneform_${it.code}").val()) """
+
+        switch (it.type) {
+          case "DATE":
+            dateFieldScript <<= dateField("_kintoneform_${it.code}")
+            break
+            
+          default:
+            break
+        }
+
       }
 
       def template = """
@@ -176,6 +186,19 @@ http.request(Method.GET, ContentType.TEXT) {
             }
         };
 """
+      def jsInit = """
+jQuery.noConflict();
+
+jQuery(window).load(function () {
+    if (Js2kintone.checkEnv()) {
+        Js2kintone.checkParams();
+        ${dateFieldScript}
+    } else {
+//
+    }
+});
+"""
+      println jsInit
       println jsHeader
       println template
       println jsFooter
