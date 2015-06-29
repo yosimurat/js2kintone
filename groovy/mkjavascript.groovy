@@ -14,78 +14,98 @@ def apiToken = config.account.apiToken
 def jsHeader = """
 jQuery.noConflict();
 
+jQuery(window).load(function () {
+    if (Js2kintone.checkEnv()) {
+        Js2kintone.checkParams();
+    } else {
+//
+    }
+});
+
 (function(\$, config) {
-    
-    var errMsg = ' is required.';
-    var requireConfigs = ['id', 'region', 'template', 'lambdaFunc', 'successMsg'];
+    Js2kintone = {
+        checkEnv: function() {
+            var _ua = (function(){
+                return {
+                    ltIE6:typeof window.addEventListener == "undefined" && typeof document.documentElement.style.maxHeight == "undefined",
+                    ltIE7:typeof window.addEventListener == "undefined" && typeof document.querySelectorAll == "undefined",
+                    ltIE8:typeof window.addEventListener == "undefined" && typeof document.getElementsByClassName == "undefined",
+                    ltIE9:document.uniqueID && typeof window.matchMedia == "undefined",
+                    gtIE10:document.uniqueID && window.matchMedia,
+                    Trident:document.uniqueID,
+                    Gecko:'MozAppearance' in document.documentElement.style,
+                    Presto:window.opera,
+                    Blink:window.chrome,
+                    Webkit:typeof window.chrome == "undefined" && 'WebkitAppearance' in document.documentElement.style,
+                    Touch:typeof document.ontouchstart != "undefined",
+                    Mobile:(typeof window.orientation != "undefined") || (navigator.userAgent.indexOf("Windows Phone") != -1),
+                    ltAd4_4:typeof window.orientation != "undefined" && typeof(EventSource) == "undefined",
+                    Pointer:window.navigator.pointerEnabled,
+                    MSPoniter:window.navigator.msPointerEnabled
+                };
+            })();
 
-    for (i = 0; i < requireConfigs.length; i++) {
-        config[requireConfigs[i]] = requireConfigs[i] in config ? config[requireConfigs[i]] : alert(requireConfigs[i] + errMsg);
-    }
-
-    config.accessKey = base64.decode(config.id.split('%')[0]);
-    config.secretKey = base64.decode(config.id.split('%')[1]);
-
-    var _ua = (function(){
-        return {
-            ltIE6:typeof window.addEventListener == "undefined" && typeof document.documentElement.style.maxHeight == "undefined",
-            ltIE7:typeof window.addEventListener == "undefined" && typeof document.querySelectorAll == "undefined",
-            ltIE8:typeof window.addEventListener == "undefined" && typeof document.getElementsByClassName == "undefined",
-            ltIE9:document.uniqueID && typeof window.matchMedia == "undefined",
-            gtIE10:document.uniqueID && window.matchMedia,
-            Trident:document.uniqueID,
-            Gecko:'MozAppearance' in document.documentElement.style,
-            Presto:window.opera,
-            Blink:window.chrome,
-            Webkit:typeof window.chrome == "undefined" && 'WebkitAppearance' in document.documentElement.style,
-            Touch:typeof document.ontouchstart != "undefined",
-            Mobile:(typeof window.orientation != "undefined") || (navigator.userAgent.indexOf("Windows Phone") != -1),
-            ltAd4_4:typeof window.orientation != "undefined" && typeof(EventSource) == "undefined",
-            Pointer:window.navigator.pointerEnabled,
-            MSPoniter:window.navigator.msPointerEnabled
+            if(_ua.ltIE9){
+                \$("#js2kintoneNonsupport").css("display", "block");
+                \$('#js2kintoneRender').css("display", "none");
+                return false;
+            } else {
+                return true;
+            }
         }
-    })();
-    if(_ua.ltIE9){
-        console.log('non support');
-    }
+        ,
+        checkParams: function() {
+            var errMsg = ' is required.';
+            var requireConfigs = ['id', 'region', 'template', 'lambdaFunc', 'successMsg'];
 
-    var callLambda = function() {
+            for (i = 0; i < requireConfigs.length; i++) {
+                config[requireConfigs[i]] = requireConfigs[i] in config ? config[requireConfigs[i]] : alert(requireConfigs[i] + errMsg);
+            }
+
+            config.accessKey = base64.decode(config.id.split('%')[0]);
+            config.secretKey = base64.decode(config.id.split('%')[1]);
+        }
+        ,
+        callLambda : function() {
 """
 
 def jsFooter = """
-        AWS.config.update({
-            accessKeyId: config.accessKey,
-            secretAccessKey: config.secretKey,
-            region: config.region
-        });
+            AWS.config.update({
+                accessKeyId: config.accessKey,
+                secretAccessKey: config.secretKey,
+                region: config.region
+            });
 
-        var context = base64.encode(JSON.stringify(json));
-        console.log(JSON.stringify(json));
+            var context = base64.encode(JSON.stringify(json));
+            console.log(JSON.stringify(json));
 
-        var lambda = new AWS.Lambda();
+            var lambda = new AWS.Lambda();
 
-        var params = {
-            FunctionName: config.lambdaFunc,
-            InvocationType: "RequestResponse",
-            ClientContext: context
-        };
+            var params = {
+                FunctionName: config.lambdaFunc,
+                InvocationType: "RequestResponse",
+                ClientContext: context
+            };
 
-        lambda.invoke( params,function(err,data) {
-            if(err) {
-                console.log(err,err.stack);
-            } else {
-                console.log(data);
-                if (data.StatusCode == 200) {
-                    successHandler();
+            lambda.invoke( params,function(err,data) {
+                if(err) {
+                    console.log(err,err.stack);
+                } else {
+                    console.log(data);
+                    if (data.StatusCode == 200) {
+                        Js2kintone.successHandler();
+                    }
                 }
-            }
-        });
-    };
+            });
+        }
+        ,
+        successHandler: function() {
+            \$("#kintoneFormSubmitSuccess").html(config['successMsg']);
+            \$("#kintoneFormSubmitSuccess").css("display", "block");
+            \$('#kintoneFormSubmit').hide();
+        }
+        
 
-    var successHandler = function() {
-        \$("#kintoneFormSubmitSuccess").html(config['successMsg']);
-        \$("#kintoneFormSubmitSuccess").css("display", "block");
-        \$('#kintoneFormSubmit').hide();
     };
 
     \$.ajax({
@@ -117,11 +137,12 @@ def jsFooter = """
 
 
         if (\$("#kintoneform").valid()) {
-            callLambda();
+            Js2kintone.callLambda();
         } else {
             \$('#kintoneFormSubmit').attr("disabled", false);
         }
 
+        return false;
     });
 
 })(jQuery, js2kintoneConfig);
