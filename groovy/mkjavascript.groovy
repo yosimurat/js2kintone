@@ -163,7 +163,7 @@ http.request(Method.GET, ContentType.TEXT) {
       
       json.properties.each {
         if (records.length() > 0) {
-          records <<= ","
+          records <<= ",\n                 "
         }
         records <<= """ "${it.code}": encodeURIComponent(\$("#_kintoneform_${it.code}").val()) """
 
